@@ -1,69 +1,69 @@
 apiVersion: v1
 data:
   kafka_perf_test.py: |+
-  import time
-  from confluent_kafka import Producer, Consumer, KafkaException
-  import statistics
-  
-  bootstrap_servers = 'my-cluster-kafka-bootstrap:9092'
-  topic = 'perf-topic'
-  num_messages = 1_000_000
-  payload = b'x' * 1024  # 1KB message
-  
-  def produce():
-      p = Producer({'bootstrap.servers': bootstrap_servers})
-      start = time.time()
-      for i in range(num_messages):
-          p.produce(topic, payload)
-          if i % 10000 == 0:
-              p.flush()
-      p.flush()
-      end = time.time()
-      return end - start
-  
-  def consume():
-      c = Consumer({
-          'bootstrap.servers': bootstrap_servers,
-          'group.id': 'perf-test-group',
-          'auto.offset.reset': 'earliest'
-      })
-      c.subscribe([topic])
-      count = 0
-      start = time.time()
-      while count < num_messages:
-          msg = c.poll(1.0)
-          if msg and not msg.error():
-              count += 1
-      end = time.time()
-      c.close()
-      return end - start
-  
-  def run_test():
-      prod_times = []
-      cons_times = []
-      for i in range(5):
-          print(f"\nRun #{i+1}")
-          print("Producing...")
-          pt = produce()
-          print(f"Produced in {pt:.2f}s")
-          prod_times.append(pt)
-  
-          print("Consuming...")
-          ct = consume()
-          print(f"Consumed in {ct:.2f}s")
-          cons_times.append(ct)
-  
-      avg_pt = statistics.mean(prod_times)
-      avg_ct = statistics.mean(cons_times)
-  
-      print(f"\n==== SUMMARY ====")
-      print(f"Average Producer Time: {avg_pt:.2f}s")
-      print(f"Average Producer Throughput: {num_messages/avg_pt:.2f} msg/sec")
-      print(f"Average Consumer Time: {avg_ct:.2f}s")
-      print(f"Average Consumer Throughput: {num_messages/avg_ct:.2f} msg/sec")
-  
-  if __name__ == "__main__":
-      run_test()
+    import time
+    from confluent_kafka import Producer, Consumer, KafkaException
+    import statistics
+    
+    bootstrap_servers = 'my-cluster-kafka-bootstrap:9092'
+    topic = 'perf-topic'
+    num_messages = 1_000_000
+    payload = b'x' * 1024  # 1KB message
+    
+    def produce():
+        p = Producer({'bootstrap.servers': bootstrap_servers})
+        start = time.time()
+        for i in range(num_messages):
+            p.produce(topic, payload)
+            if i % 10000 == 0:
+                p.flush()
+        p.flush()
+        end = time.time()
+        return end - start
+    
+    def consume():
+        c = Consumer({
+            'bootstrap.servers': bootstrap_servers,
+            'group.id': 'perf-test-group',
+            'auto.offset.reset': 'earliest'
+        })
+        c.subscribe([topic])
+        count = 0
+        start = time.time()
+        while count < num_messages:
+            msg = c.poll(1.0)
+            if msg and not msg.error():
+                count += 1
+        end = time.time()
+        c.close()
+        return end - start
+    
+    def run_test():
+        prod_times = []
+        cons_times = []
+        for i in range(5):
+            print(f"\nRun #{i+1}")
+            print("Producing...")
+            pt = produce()
+            print(f"Produced in {pt:.2f}s")
+            prod_times.append(pt)
+    
+            print("Consuming...")
+            ct = consume()
+            print(f"Consumed in {ct:.2f}s")
+            cons_times.append(ct)
+    
+        avg_pt = statistics.mean(prod_times)
+        avg_ct = statistics.mean(cons_times)
+    
+        print(f"\n==== SUMMARY ====")
+        print(f"Average Producer Time: {avg_pt:.2f}s")
+        print(f"Average Producer Throughput: {num_messages/avg_pt:.2f} msg/sec")
+        print(f"Average Consumer Time: {avg_ct:.2f}s")
+        print(f"Average Consumer Throughput: {num_messages/avg_ct:.2f} msg/sec")
+    
+    if __name__ == "__main__":
+        run_test()
 
 kind: ConfigMap
 metadata:
