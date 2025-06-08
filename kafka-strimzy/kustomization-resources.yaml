@@ -1,7 +1,6 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
-- manifests/ns.yaml
 - manifests/cluster.yaml
 - manifests/knp.yaml
 - manifests/user.yaml
