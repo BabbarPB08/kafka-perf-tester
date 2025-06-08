@@ -1,0 +1,14 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaNodePool
+metadata:
+  labels:
+    strimzi.io/cluster: my-cluster
+  name: dual-role-pool
+  namespace: kafka
+spec:
+  replicas: 3
+  roles:
+    - broker
+    - controller
+  storage:
+    type: ephemeral

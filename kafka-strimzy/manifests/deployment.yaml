@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+  name: kafka-test-client
+  namespace: kafka
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kafka-test-client
+  template:
+    metadata:
+      labels:
+        app: kafka-test-client
+    spec:
+      containers:
+      - command:
+        - sleep
+        - "4800"
+        image: registry.redhat.io/ubi9/python-311@sha256:bb88b4e3c323a908a340b9ede5a863aa33395878d104fe44a6cbb5400d6b9c96
+        imagePullPolicy: IfNotPresent
+        name: tester
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /opt/scripts/kafka_perf_test.py
+          name: perf-script
+          subPath: kafka_perf_test.py
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: kafka-perf-script
+        name: perf-script
