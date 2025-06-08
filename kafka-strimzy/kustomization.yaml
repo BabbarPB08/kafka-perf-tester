@@ -7,3 +7,4 @@ resources:
 - manifests/user.yaml
 - manifests/k-topic.yaml
 - manifests/cm-perf-script.yaml
+- manifests/deployment.yaml
