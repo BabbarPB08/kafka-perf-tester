@@ -30,9 +30,9 @@ flowchart TD
     Consumer[Consumer App - Reads Messages] -->|Read| Topic
 
     Topic --> Broker[Kafka Broker]
-    Broker --> Disk[Disk IOPS]
+    Broker --> Disk[Disk IOPS Tuning 🔗]
     Broker --> CPU[CPU Core]
-    CPU --> CState[CPU C-State: max_cstate=1 or 9]
+    CPU --> CState[CPU C-State Tuning 🔗]
 
     subgraph Performance_Impact
         CState -->|High = Slow Wakeup| Latency1[Kafka Slower]
@@ -40,6 +40,11 @@ flowchart TD
         Disk -->|Slow Disk = IO bottleneck| IO1[Lower Throughput]
         Disk -->|Fast Disk = Smooth writes| IO2[Higher Throughput]
     end
+
+    %% Define clickable links
+    click CState "https://access.redhat.com/solutions/7123874" "Red Hat: CPU C-State Tuning"
+    click Disk "https://access.redhat.com/articles/7110061" "Red Hat: Kafka IOPS Recommendations"
+
 ````
 
 ---
