@@ -7,8 +7,13 @@ This project helps test how changing CPU power settings (C-State tuning) impacts
 ## 🎯 What's This For?
 
 Kafka performance isn't just about Kafka itself—it depends on:
-- 🧠 **CPU wake-up time** (affected by C-States)
-- 💽 **Disk IOPS** (read/write speed matters!)
+
+- 🔧 [Recommended Disk and IOPS Settings for Apache Kafka Brokers on OpenShift](https://access.redhat.com/articles/7110061)  
+  > Covers disk type, throughput, and best practices to prevent I/O bottlenecks on Kafka brokers.
+
+- 🧠 [How to Configure CPU C-State for Low Latency](https://access.redhat.com/solutions/7123874)  
+  > Useful when tuning `intel_idle.max_cstate` on OpenShift worker nodes for latency-sensitive apps like Kafka.
+
 - 🌐 **Network** (moving messages around)
 
 By tweaking CPU settings, we can compare how fast Kafka runs in:
